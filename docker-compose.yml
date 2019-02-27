@@ -1,0 +1,24 @@
+webserver:
+  build: images/woocommerce
+  container_name: woocommerce
+  links:
+    - dbserver:mysql
+  ports: 
+    - 80:80
+    - 443:443
+  volumes:
+    - ./data/web:/var/www/html
+    - ./scripts/postscripts:/scripts/post-install.d
+  #env_file: 
+    #- env/overrides.env
+
+dbserver:
+  container_name: woocommerce_db
+  image: mariadb/server:10.3
+  env_file: 
+    - env/mysql.env
+    #- env/overrides.env
+  ports:
+    - 3306:3306
+  volumes:
+    - ./data/mariadb:/var/lib/mysql
